@@ -8,6 +8,7 @@ namespace DatingApi.Utility
         public HttpStatusCode httpStatusCode { get; set; }
         public List<string> ErrorMessage { get; set; }
         public Object Result { get; set; }
+        public string Token { get; set; }
 
     }
 }

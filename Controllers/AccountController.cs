@@ -5,7 +5,9 @@ using DatingApi.Service.IService;
 using DatingApi.Utility;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -15,11 +17,14 @@ namespace DatingApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        public IUOWService UOW { get; set; }
+        private readonly IUOWService UOW;
         protected ApiResponse response;
-        public AccountController(IUOWService UOW)
+        private readonly IJwtToken jwtToken;
+
+        public AccountController(IUOWService UOW , IJwtToken jwtToken)
         {
             this.UOW = UOW;
+            this.jwtToken = jwtToken;
             this.response = new();
         }
 
@@ -104,7 +109,9 @@ namespace DatingApi.Controllers
                     }
                         
                 }
-               this.SuccessResponse(HttpStatusCode.OK,userExist.UserName);
+
+                var token = jwtToken.Token(userExist);
+               SuccessResponse(HttpStatusCode.OK,userExist,token);
                 return this.response;   
             }
             catch (Exception ex)
@@ -117,7 +124,14 @@ namespace DatingApi.Controllers
 
 
         [NonAction]
-        public void SuccessResponse(HttpStatusCode httpStatusCode,Object result)
+        public void SuccessResponse(HttpStatusCode httpStatusCode,Object result , string token )
+        {
+            this.response.httpStatusCode = httpStatusCode;
+            this.response.Result = result;
+            this.response.Token = token;
+        }
+        [NonAction]
+        public void SuccessResponse(HttpStatusCode httpStatusCode, Object result)
         {
             this.response.httpStatusCode = httpStatusCode;
             this.response.Result = result;

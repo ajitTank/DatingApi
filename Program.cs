@@ -3,6 +3,7 @@ using DatingApi.Repository;
 using DatingApi.Repository.IRepository;
 using DatingApi.Service;
 using DatingApi.Service.IService;
+using DatingApi.Utility;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,7 @@ builder.Services.AddCors();
 
 //DI of Iunit of Work
 builder.Services.AddScoped<IUOWService,UOWService>();
+builder.Services.AddScoped<IJwtToken, JwtToken>();
 
 var app = builder.Build();
 
