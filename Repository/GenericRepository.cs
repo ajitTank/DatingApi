@@ -25,7 +25,7 @@ namespace DatingApi.Repository
             this.dbEntitySet.Remove(entity);
         }
 
-        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperty = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperty = null)
         {
             IQueryable<T> query = dbEntitySet;
             if(filter != null)
@@ -39,7 +39,7 @@ namespace DatingApi.Repository
                     query.Include(item);
                 }
             }
-            return query.ToListAsync();
+            return await query.ToListAsync();
         }
 
         public async Task<T> GetByValueAsync(Expression<Func<T, bool>> filter, string? includeProperty = null)
@@ -57,7 +57,7 @@ namespace DatingApi.Repository
                 }
             }
 
-            return query.AsNoTracking().FirstOrDefaultAsync();
+            return await query.AsNoTracking().FirstOrDefaultAsync();
         }
     }
     

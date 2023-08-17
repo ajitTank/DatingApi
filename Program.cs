@@ -1,4 +1,8 @@
 using DatingApi.Data;
+using DatingApi.Repository;
+using DatingApi.Repository.IRepository;
+using DatingApi.Service;
+using DatingApi.Service.IService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +19,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServe
 
 //configuration for the Cors
 builder.Services.AddCors();
+
+//DI of Iunit of Work
+builder.Services.AddScoped<IUOWService,UOWService>();
 
 var app = builder.Build();
 
