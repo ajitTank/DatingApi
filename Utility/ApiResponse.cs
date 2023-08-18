@@ -10,5 +10,16 @@ namespace DatingApi.Utility
         public Object Result { get; set; }
         public string Token { get; set; }
 
+        public ApiResponse()
+        {
+            
+        }
+        public ApiResponse(bool isSuccess,HttpStatusCode httpStatusCode , List<string> ErrorMessage)
+        {
+            this.isSuccess = isSuccess;
+            this.httpStatusCode = httpStatusCode;
+            this.ErrorMessage = ErrorMessage;
+        }
+
     }
 }

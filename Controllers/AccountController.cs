@@ -38,7 +38,9 @@ namespace DatingApi.Controllers
 
         public async Task<ActionResult<ApiResponse>> register(RegisterDto registerDto)
         {
-           
+
+            throw new DivideByZeroException();
+
             try
             {
                 //here the saving data depends on the user existence and userExit is async type
@@ -46,6 +48,7 @@ namespace DatingApi.Controllers
                 var UserExist = await userExistAsync(registerDto.UserName);
                 if ( UserExist!= null)
                 {
+                
                     this.response.httpStatusCode = HttpStatusCode.BadRequest;
                     this.response.ErrorMessage = new List<string>() { "User Name Already exist" };
                     return this.response;
@@ -111,7 +114,7 @@ namespace DatingApi.Controllers
                 }
 
                 var token = jwtToken.Token(userExist);
-               SuccessResponse(HttpStatusCode.OK,userExist,token);
+               SuccessResponse(HttpStatusCode.OK,userExist.UserName,token);
                 return this.response;   
             }
             catch (Exception ex)

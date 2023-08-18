@@ -25,7 +25,7 @@ namespace DatingApi.Utility
          var securityTokenDescriptor = new SecurityTokenDescriptor()
             {
              Subject = new ClaimsIdentity(claims),
-             Expires = DateTime.Now.AddMinutes(3),
+             Expires = DateTime.Now.AddSeconds(30),
              SigningCredentials = Creds
             };
 
