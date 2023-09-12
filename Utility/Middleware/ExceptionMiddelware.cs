@@ -27,7 +27,7 @@ namespace DatingApi.Utility.Middleware
             {
                 this.logger.LogError(ex, ex.Message);
                 context.Response.ContentType = "application/json";
-                /* context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;*/
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
                 var response = env.IsDevelopment() ? new ApiResponse(false,HttpStatusCode.InternalServerError, new List<string>() { ex.Message, ex.StackTrace.ToString() })
                         : new ApiResponse(false,HttpStatusCode.InternalServerError, new List<string>() { ex.Message, "Internal Server Error" });

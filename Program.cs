@@ -1,11 +1,12 @@
 using DatingApi.Data;
-using DatingApi.Repository;
-using DatingApi.Repository.IRepository;
 using DatingApi.Service;
 using DatingApi.Service.IService;
 using DatingApi.Utility;
 using DatingApi.Utility.Middleware;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,13 +27,27 @@ builder.Services.AddCors();
 builder.Services.AddScoped<IUOWService,UOWService>();
 builder.Services.AddScoped<IJwtToken, JwtToken>();
 
+//Adding configuration for Authentication
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["TokenKey"]))
+
+        };
+    });
+
 var app = builder.Build();
 
 //adding you exceptionMiddleware
 app.UseMiddleware<ExceptionMiddelware>();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()||app.Environment.IsProduction())
+// Configure the HTTP request pipeline.||app.Environment.IsProduction()
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

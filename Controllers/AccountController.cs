@@ -36,11 +36,16 @@ namespace DatingApi.Controllers
 // its not capturing the interner server error
 // how to to exception handling ?
 
-        public async Task<ActionResult<ApiResponse>> register(RegisterDto registerDto)
+        public async Task<ActionResult<ApiResponse>> register([FromBody]RegisterDto registerDto)
         {
 
-            throw new DivideByZeroException();
+            /*throw new DivideByZeroException();*/
 
+            if (!ModelState.IsValid)
+            {
+                this.response.ErrorMessage = new List<string>() {ModelState.Values.ToString()};
+                return this.response;
+            }
             try
             {
                 //here the saving data depends on the user existence and userExit is async type

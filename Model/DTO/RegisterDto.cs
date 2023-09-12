@@ -7,6 +7,7 @@ namespace DatingApi.Model.DTO
         [Required]
         public string UserName { get; set; }
         [Required]
+        [MinLength(3)]
         public string Password { get; set; }
     }
 }
